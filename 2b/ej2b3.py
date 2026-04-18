@@ -40,6 +40,7 @@ def create_app():
         # Implementa este endpoint para obtener los parámetros de consulta
         # y devolverlos en formato JSON
         pass
+        return jsonify(dict(request.args))
 
     @app.route('/form', methods=['POST'])
     def form_handler():
@@ -51,6 +52,8 @@ def create_app():
         # Implementa este endpoint para obtener los datos del formulario
         # y devolverlos en formato JSON
         pass
+        return jsonify(dict(request.form))
+        
 
     @app.route('/json', methods=['POST'])
     def json_handler():
@@ -62,6 +65,7 @@ def create_app():
         # Implementa este endpoint para obtener los datos JSON
         # y devolverlos en formato JSON
         pass
+        return jsonify(request.get_json())
 
     return app
 
