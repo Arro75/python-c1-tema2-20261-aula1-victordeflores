@@ -52,7 +52,11 @@ def create_app():
         """
         # Implementa este endpoint
         pass
+        for product in products:
+            if product['id'] == product_id:
+                return jsonify(product), 200
 
+        return jsonify({"error": "Producto no encontrado"}), 404
 
     return app
 
