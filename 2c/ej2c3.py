@@ -66,22 +66,23 @@ def create_app():
         # 3. Devuelve la lista filtrada en formato JSON con código 200
         pass
         filtered_products = products.copy()
+
         category = request.args.get('category')
         min_price = request.args.get('min_price', type=float)
         max_price = request.args.get('max_price', type=float)
         name = request.args.get('name')
 
         if category:
-            filtered_products = [product for product in filtered_products if product['category'] == category]
+            filtered_products = [p for p in filtered_products if p['category'] == category]
 
         if min_price is not None:
-            filtered_products = [product for product in filtered_products if product['price'] >= min_price]
+            filtered_products = [p for p in filtered_products if p['price'] >= min_price]
 
         if max_price is not None:
-            filtered_products = [product for product in filtered_products if product['price'] <= max_price]
+            filtered_products = [p for p in filtered_products if p['price'] <= max_price]
 
         if name:
-            filtered_products = [product for product in filtered_products if name.lower() in product['name'].lower()]
+            filtered_products = [p for p in filtered_products if name.lower() in p['name'].lower()]
 
         return jsonify(filtered_products), 200
 

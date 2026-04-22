@@ -57,6 +57,10 @@ def create_app():
         # 2. Lee el contenido de la solicitud usando request.data
         # 3. Devuelve el mismo texto con Content-Type text/plain
         pass
+        if request.content_type != 'text/plain':
+            return jsonify({"error": "Content-Type must betext/plain"}), 400
+        return request.data.decode(), 200, {'Content-Type': 'text/plain'}
+    
 
     @app.route('/html', methods=['POST'])
     def post_html():
@@ -68,6 +72,11 @@ def create_app():
         # 2. Lee el contenido de la solicitud
         # 3. Devuelve el mismo HTML con Content-Type text/html
         pass
+        if request.content_type != 'text/html':
+            return jsonify({"error": "Content-Type must be text/html"}), 400
+        return request.data.decode(), 200, {'Content-Type': 'text/html'}
+
+
 
     @app.route('/json', methods=['POST'])
     def post_json():
@@ -78,6 +87,9 @@ def create_app():
         # 1. Accede al contenido JSON usando request.get_json()
         # 2. Devuelve el mismo objeto JSON usando jsonify()
         pass
+        return jsonify(request.get_json())
+
+
 
     @app.route('/xml', methods=['POST'])
     def post_xml():
@@ -89,6 +101,10 @@ def create_app():
         # 2. Lee el contenido XML de la solicitud
         # 3. Devuelve el mismo XML con Content-Type application/xml
         pass
+        if request.content_type != 'application/xml':
+            return jsonify({"error": "Content-Type must be application/xml"}), 400
+        return request.data.decode(), 200, {'Content-Type': 'application/xml'}
+
 
     @app.route('/image', methods=['POST'])
     def post_image():
@@ -101,6 +117,20 @@ def create_app():
         # 3. Guarda la imagen en el directorio 'uploads' con un nombre único
         # 4. Devuelve una confirmación con el nombre del archivo guardado
         pass
+        if request.content_type not in ['image/png', 'image/jpeg']:
+            return jsonify({"error": "Content-Type must be image/png or image/jpeg"}), 400
+        
+        filename = f'image_{os.urandom(8).hex()}.{request.content_type.split("/")[1]}'
+        filepath = os.path.join(uploads_dir, filename)
+
+        with open(filepath, 'wb') as f:
+            f.write(request.data)
+
+        return jsonify({
+            "message": "Imagen guardada correctamente",
+            "archivo": filename
+        })
+    
 
     @app.route('/binary', methods=['POST'])
     def post_binary():
@@ -113,6 +143,14 @@ def create_app():
         # 3. Guarda los datos en un archivo o simplemente verifica su tamaño
         # 4. Devuelve una confirmación con información sobre los datos recibidos
         pass
+        if request.content_type != 'application/octet-stream':
+            return jsonify({"error": "Content-Type must be application/octet-stream"}), 400
+        
+        return jsonify({
+            "message": "Datos binarios recibidos correctamente",
+            "tamaño": len(request.data)
+        })
+
 
     return app
 

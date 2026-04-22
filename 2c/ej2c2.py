@@ -60,7 +60,7 @@ def create_app():
         global next_id
         data = request.get_json()
         if not data or "name" not in data:
-            return jsonify({"error": "Se requiere el campo 'name'"}), 400
+            return jsonify({"error": "Missing name field"}), 400
         task = {"id": next_id, "name": data["name"]}
         tasks.append(task)
         next_id += 1
@@ -77,8 +77,8 @@ def create_app():
         for i, task in enumerate(tasks):
             if task['id'] == task_id:
                 tasks.pop(i)
-                return jsonify({"message": "Tarea eliminada"}), 200
-        return jsonify({"error": "Tarea no encontrada"}), 404
+                return jsonify({"message": "Task deleted"}), 200
+        return jsonify({"error": "Task not found"}), 404
 
     @app.route('/tasks/<int:task_id>', methods=['PUT'])
     def update_task(task_id):
@@ -91,14 +91,14 @@ def create_app():
         pass
         data = request.get_json()
         if not data or "name" not in data:
-            return jsonify({"error": "Se requiere el campo 'name'"}), 400
+            return jsonify({"error": "Missing name field"}), 400
 
         for task in tasks:
             if task['id'] == task_id:
                 task['name'] = data['name']
                 return jsonify(task), 200
 
-        return jsonify({"error": "Tarea no encontrada"}), 404
+        return jsonify({"error": "Task not found"}), 404
 
     return app
 

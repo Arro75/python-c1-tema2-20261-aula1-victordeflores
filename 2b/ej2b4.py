@@ -45,7 +45,7 @@ p<!doctype html>
 <head>
 <body>
     <div class="greeting">
-      <h1>Hola, {{ victor }}!</h1>
+      <h1>Hola, {{ nombre }}!</h1>
       <p>¡Bienvenido a nuestra página web.</p>
     </div>
 <body>
